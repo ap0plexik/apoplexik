@@ -1,0 +1,19 @@
+@media (prefers-color-scheme: dark) {
+	input::placeholder,
+	textarea::placeholder {
+		color: rgb(148 163 184) !important; // slate-400
+		opacity: 1;
+	}
+}
+
+body .Vue-Toastification__ {
+	&toast {
+		padding: 12px 16px;
+		min-height: 0;
+		border-radius: 0.5rem;
+	}
+
+	 &icon {
+		margin: 2px 12px 0 0;
+	 }
+}
