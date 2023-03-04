@@ -2,7 +2,7 @@
 /public/build
 /public/hot
 /public/storage
-!/public/storage/app/markdown/*.md
+!/public/storage/app/.gitignore
 /storage/*.key
 /vendor
 .env
