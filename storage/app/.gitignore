@@ -1,5 +1,5 @@
 *
 !public/
-!markdown/**/*.md
+!markdown/*.md
 !.gitignore
 
