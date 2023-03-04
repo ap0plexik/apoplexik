@@ -106,7 +106,7 @@ class PostController extends Controller
 		// Save a copy of the post as a Markdown file
 		$filename = Str::substr( Str::slug($post->title), 0, 30) . '.md';
 		$content = "# {$post->title}\n\n{$post->body}";
-		$return = Storage::put('markdown/' . $filename, $content);
+		$return = Storage::put('public/markdown/' . $filename, $content);
 
 		// Update the slug.
 		$post->slug = Str::slug($post->title);

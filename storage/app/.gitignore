@@ -1,3 +1,4 @@
 *
 !public/
+!public/markdown/*
 !.gitignore
