@@ -1,3 +1,5 @@
 *
 !public/
+!markdown/*.md
 !.gitignore
+

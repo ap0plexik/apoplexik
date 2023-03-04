@@ -316,7 +316,7 @@ let deletePost = (post) => {
                       leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
                       <DialogPanel
-                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl"
+                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl"
                       >
                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                           <div class="sm:flex sm:items-start">
@@ -351,7 +351,7 @@ let deletePost = (post) => {
                                       >Body</label
                                     >
                                     <Textarea
-                                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                      class="shadow appearance-none border rounded w-full py-2 px-3 min-h-[300px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                       id="PostBodyInput"
                                       v-model="form.body"
                                       placeholder="Enter Body"

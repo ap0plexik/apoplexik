@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Http\Controllers\NavController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 use League\CommonMark\Environment\Environment;
@@ -101,6 +102,11 @@ class PostController extends Controller
 		} elseif ($request->input('remove_featured_image')) {
 			$post->featured_image = '';
 		}
+
+		// Save a copy of the post as a Markdown file
+		$filename = Str::substr( Str::slug($post->title), 0, 30) . '.md';
+		$content = "# {$post->title}\n\n{$post->body}";
+		$return = Storage::put('markdown/' . $filename, $content);
 
 		// Update the slug.
 		$post->slug = Str::slug($post->title);
