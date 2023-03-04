@@ -26,7 +26,7 @@ const truncate = computed(() => {
     <Syntax title="Archive">
       <div>
 
-        <article v-for="(post, index) in posts" v-bind:key="index" class="pb-8 mb-8 border-b border-slate-200 pt-6 dark:border-slate-800">
+        <article v-for="(post, index) in posts" v-bind:key="index" class="pb-8 mb-8 max-w-3xl border-b border-slate-200 pt-6 dark:border-slate-800">
           <header class="mb-9 space-y-1">
             <p v-if="post.category" class="font-display text-sm font-medium text-sky-500">
 			  {{ post.category.name }}

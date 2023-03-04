@@ -19,6 +19,7 @@ class Post extends Model
 		'title',
 		'body',
 		'order',
+		'featured_image',
 	];
 
 	public function category()

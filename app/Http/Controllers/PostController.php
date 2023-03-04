@@ -58,9 +58,7 @@ class PostController extends Controller
 
 	public function single($param)
 	{
-
-		$post = Post::where('id', $param)
-			->orWhere('slug', $param)
+		$post = Post::where('slug', $param)
 			->with('category')
 			->firstOrFail();
 
@@ -84,13 +82,24 @@ class PostController extends Controller
 		$id   = $request->input('id') ? $request->input('id') : '';
 		$post = Post::where('id', $id)->firstOrNew();
 
-		$inputs = [
-			'title',
-			'body',
-		];
+		$validatedData = $request->validate([
+			'title' => 'required|max:255',
+			'body' => 'required',
+			'category_id' => 'required|exists:categories,id',
+			'remove_featured_image' => 'boolean',
+			'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+		]);
 
-		foreach ($inputs as $field) {
-			$post->$field = $request->input($field);
+		$post->title = $validatedData['title'];
+		$post->body = $validatedData['body'];
+
+		if ($request->file('img')) {
+			$img_name = $request->img->getClientOriginalName();
+			$img_obj = $request->img->move( public_path('featured_images'), $img_name );
+			$img_path = strstr($img_obj->getPathname(), '/featured_images');
+			$post->featured_image = $img_path;
+		} elseif ($request->input('remove_featured_image')) {
+			$post->featured_image = '';
 		}
 
 		// Update the slug.

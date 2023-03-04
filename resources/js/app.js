@@ -23,10 +23,11 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Toast, {
-                transition: "Vue-Toastification__bounce",
+				position: "bottom-right",
+                transition: "Vue-Toastification__slideBlurred",
                 maxToasts: 20,
                 newestOnTop: true,
-                timeout: false, // 2000
+                timeout: 2000,
             })
             .mount(el);
     },

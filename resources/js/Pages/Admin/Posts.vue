@@ -40,7 +40,12 @@ let form = useForm({
   body: "",
   order: 0,
   category_id: 0,
+  featured_image: "",
+  remove_featured_image: false,
+  img: "",
 });
+
+const image_url = ref("");
 
 const formOrder = computed({
   get() {
@@ -50,6 +55,18 @@ const formOrder = computed({
     form.order = Number(newVal);
   },
 });
+
+const removeImage = () => {
+  image_url.value = "";
+  form.img = "";
+  form.remove_featured_image = true;
+};
+
+const handleFileUpload = (e) => {
+  image_url.value = URL.createObjectURL(e.target.files[0]);
+  form.img = e.target.files[0];
+  form.remove_featured_image = false;
+};
 
 let modalIsOpen = ref(false);
 let editMode = ref(false);
@@ -70,6 +87,10 @@ let setPostToForm = (post) => {
   form.body = post.body;
   form.order = post.order;
   form.category_id = post.category_id;
+  form.featured_image = post.featured_image;
+  form.remove_featured_image = false;
+  form.img = "";
+  image_url.value = post.featured_image;
 };
 
 let createPost = () => {
@@ -86,10 +107,10 @@ let editPost = (post) => {
 
 let updatePost = () => {
   form.post(route("posts.update"), {
+    _method: "put",
     onSuccess: (page) => {
       if (page.props.errors && Object.keys(page.props.errors).length === 0) {
         toast.success("Post Updated");
-        form.reset();
         closeModal();
       } else {
         toast.error("Post Update Failed");
@@ -108,7 +129,6 @@ let deletePost = (post) => {
     onSuccess: (page) => {
       if (page.props.errors && Object.keys(page.props.errors).length === 0) {
         toast.success("Post Deleted");
-        form.reset();
         closeModal();
       } else {
         toast.error("Post Deletion Failed");
@@ -167,6 +187,12 @@ let deletePost = (post) => {
                           >
                             ID
                           </th>
+						  <th
+                            scope="col"
+                            class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                          >
+                            img
+                          </th>
                           <th
                             scope="col"
                             class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
@@ -174,12 +200,6 @@ let deletePost = (post) => {
                             Title
                           </th>
                           <th
-                            scope="col"
-                            class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Body
-                          </th>
-						  <th
                             scope="col"
                             class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
                           >
@@ -212,17 +232,18 @@ let deletePost = (post) => {
                           >
                             {{ post.id }}
                           </td>
+						  <td
+                            class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0"
+                          >
+						  <div v-if="post.featured_image" class="aspect-video w-28 bg-cover bg-center" v-bind:style="{ 'backgroundImage': 'url(' + post.featured_image + ')' }" ></div>
+						  <div v-else class="aspect-video w-28 bg-slate-100 bg-cover bg-center"></div>
+                          </td>
                           <td
                             class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900"
                           >
-                            {{ post.title }}
+                            {{ truncate(post.title, 50) }}
                           </td>
                           <td
-                            class="whitespace-nowrap py-4 px-3 text-sm text-gray-500"
-                          >
-                            {{ truncate(post.body, 50) }}
-                          </td>
-						  <td
                             class="whitespace-nowrap py-4 px-3 text-sm text-gray-500"
                           >
                             {{ post.category?.name }}
@@ -350,8 +371,36 @@ let deletePost = (post) => {
                                     />
                                   </div>
                                   <div class="mb-6">
+                                    <label for="featured_image"
+                                      >Featured Image:</label
+                                    ><br />
+                                    <div
+                                      v-if="image_url"
+                                      class="flex items-start justify-start w-full"
+                                    >
+                                      <img
+                                        :src="image_url"
+                                        alt="Featured Image Preview"
+                                        width="150"
+                                      />
+                                      <Button
+                                        type="button"
+                                        @click="removeImage"
+                                      >
+                                        Remove
+                                      </Button>
+                                    </div>
+                                    <input
+                                      v-else
+                                      type="file"
+                                      id="featured_image"
+                                      accept="image/*"
+                                      @input="handleFileUpload"
+                                    />
+                                  </div>
+                                  <div class="mb-6">
                                     <label
-                                      for="PostOrderInput"
+                                      for="CategorySelect"
                                       class="block text-gray-700 text-sm font-bold mb-2"
                                       >Category</label
                                     >

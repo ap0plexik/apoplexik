@@ -14,17 +14,17 @@ let props = defineProps({
 
 <template>
   <div>
-    <Syntax title="Archive">
-	<article class="pb-8 mb-8 border-b border-slate-200 pt-6 dark:border-slate-800">
+    <Syntax :title="post.title">
+	<article class="pb-8 mb-8 max-w-3xl border-b border-slate-200 pt-6 dark:border-slate-800">
 		<header class="mb-9 space-y-1">
 		<p v-if="post.category" class="font-display text-sm font-medium text-sky-500">
 			{{ post.category.name }}
 		</p>
 		<h1
 			class="font-display text-3xl tracking-tight text-slate-900 dark:text-white"
-
 		>{{post.title}}
 		</h1>
+			<div v-if="post.featured_image" class="aspect-video w-full bg-cover bg-center" v-bind:style="{ 'backgroundImage': 'url(' + post.featured_image + ')' }" ></div>
 		</header>
 		<div
 		v-html="post.body"
@@ -32,8 +32,6 @@ let props = defineProps({
 		>
 		</div>
 	</article>
-	<Pagination />
-
 	  <template #leftNav>
 		<NavLeft />
 	  </template>

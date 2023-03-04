@@ -20,6 +20,7 @@ return new class extends Migration
 			$table->integer('order')->default(0)->nullable();
 			$table->foreignId('category_id')->nullable()->constrained();
 			$table->text('slug');
+			$table->string('featured_image')->nullable();
 			$table->timestamps();
 		});
 	}

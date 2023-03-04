@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
 
 		$i = 1;
 		$categories = [
-			'Category 1',
-			'Category 2',
-			'Category 3',
+			'Articles',
+			'Tutorials',
+			'Resources',
 		];
 		foreach($categories as $category) {
 			Category::create([
