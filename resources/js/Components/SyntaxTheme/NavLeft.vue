@@ -1,8 +1,18 @@
 <script setup>
+import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 defineProps({
   navData: Object,
 });
+
+// If is current route, append activeClasses to linkClasses
+const linkClass = (bool) => {
+	let classes = "block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full before:hidden before:bg-slate-300 hover:text-slate-600 hover:before:block transition"
+	let activeColors = "font-semibold text-sky-500 before:bg-sky-500"
+	let defaultColors = "text-slate-500 dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-slate-300"
+
+  return bool ? `${classes} ${activeColors}` : `${classes} ${defaultColors}`
+};
 </script>
 <template>
 	<!-- Left Nav-->
@@ -23,6 +33,9 @@ defineProps({
 
           <nav class="text-base lg:text-sm w-64 pr-8 xl:w-72 xl:pr-16">
             <ul role="list" class="space-y-9">
+				<li class="font-display font-medium text-slate-900 dark:text-white">
+					<Link :ref="route('posts.archive')">All Articles</Link>
+					</li>
               <li v-for="cat in navData" :key="cat.id">
                 <h2
                   class="font-display font-medium text-slate-900 dark:text-white"
@@ -34,7 +47,7 @@ defineProps({
                   class="mt-2 space-y-2 border-l-2 border-slate-100 dark:border-slate-800 lg:mt-4 lg:space-y-4"
                 >
                   <li v-for="post in cat.posts" :key="post.id" class="relative">
-					<Link :href="'/articles/' + post.slug" class="block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full text-slate-500 before:hidden before:bg-slate-300 hover:text-slate-600 hover:before:block dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-slate-300 transition">
+					<Link :href="'/articles/' + post.slug"  :only="['post']" :class="linkClass(route().current('posts.single', {'slug' : post.slug}))">
 					{{ post.title }}
 					</Link>
                   </li>

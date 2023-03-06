@@ -27,14 +27,14 @@ const truncate = computed(() => {
       <div>
 
         <article v-for="(post, index) in posts" v-bind:key="index" class="pb-8 mb-8 max-w-3xl border-b border-slate-200 pt-6 dark:border-slate-800">
-          <header class="mb-9 space-y-1">
+          <header class="mb-9 space-y-1 bg-gradient-to-r from-indigo-200 via-sky-400 to-indigo-200 bg-clip-text text-transparent">
             <p v-if="post.category" class="font-display text-sm font-medium text-sky-500">
 			  {{ post.category.name }}
             </p>
             <h1
-              class="font-display text-3xl tracking-tight text-slate-900 dark:text-white"
+              class="font-display text-3xl tracking-tight"
             >
-              <Link :href="'/articles/' + post.slug" class="hover:text-sky-600 transition">{{ post.title }}</Link>
+              <Link :href="'/articles/' + post.slug" class="hover:text-sky-600 transition duration-300">{{ post.title }}</Link>
             </h1>
           </header>
           <div

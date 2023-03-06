@@ -41,4 +41,4 @@ Route::middleware([
 
 Route::get('/articles', [PostController::class, 'archive'])->name('posts.archive');
 Route::get('/articles/search', [PostController::class, 'search'])->name('posts.search');
-Route::get('/articles/{id:slug}/', [PostController::class, 'single'])->name('posts.single');
+Route::get('/articles/{post:slug}/', [PostController::class, 'single'])->name('posts.single');

@@ -46,17 +46,19 @@ defineProps({
         aria-label="Home page"
         :href="route('home')"
         title="Home"
-        class="flex items-center group text-2xl text-white font-bold"
+        class="flex items-center group text-2xl"
       >
         <img
           src="/img/apoplexik-sq.jpg"
           alt="ap0plexik logo"
-          class="w-16 h-16 ml-4 rounded rounded-full border-4 border-transparent group-hover:border-fuchsia-400 transition transition-duration-300"
+          class="w-16 h-16 ml-4 rounded rounded-full border-4 border-transparent group-hover:border-fuchsia-400 transition duration-400"
         />
+		<div class="inline bg-gradient-to-r from-indigo-200 via-sky-400 to-indigo-200 group-hover:via-fuchsia-300 group-hover:to-indigo-200 bg-clip-text transition transition-duration-300 text-transparent">
         <span
-          class="block ml-5 group-hover:text-fuchsia-400 transition transition-duration-300"
+          class="block ml-5 font-bold"
           >Apoplexik</span
         >
+		</div>
       </Link>
     </div>
     <!-- Search Bar -->

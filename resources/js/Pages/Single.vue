@@ -16,15 +16,15 @@ let props = defineProps({
   <div>
     <Syntax :title="post.title">
 	<article class="pb-8 mb-8 max-w-3xl border-b border-slate-200 pt-6 dark:border-slate-800">
-		<header class="mb-9 space-y-1">
-		<p v-if="post.category" class="font-display text-sm font-medium text-sky-500">
-			{{ post.category.name }}
-		</p>
-		<h1
-			class="font-display text-3xl tracking-tight text-slate-900 dark:text-white"
-		>{{post.title}}
-		</h1>
-			<div v-if="post.featured_image" class="aspect-video w-full bg-cover bg-center" v-bind:style="{ 'backgroundImage': 'url(' + post.featured_image + ')' }" ></div>
+		<header class="mb-9 bg-gradient-to-r from-indigo-200 via-sky-400 to-indigo-200 bg-clip-text text-transparent">
+			<p v-if="post.category" class="mb-1 font-display text-sm font-medium text-sky-500">
+				{{ post.category.name }}
+			</p>
+			<h1
+				class="font-display text-3xl tracking-tight"
+			>{{post.title}}
+			</h1>
+			<div v-if="post.featured_image" class="aspect-video mt-4 w-full bg-cover bg-center" v-bind:style="{ 'backgroundImage': 'url(' + post.featured_image + ')' }" ></div>
 		</header>
 		<div
 		v-html="post.body"

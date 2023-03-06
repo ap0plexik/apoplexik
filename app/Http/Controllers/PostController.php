@@ -10,6 +10,7 @@ use App\Http\Controllers\NavController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManagerStatic as Image;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
@@ -52,17 +53,13 @@ class PostController extends Controller
 	}
 
 	/**
-	 * The Post Archive Page.
+	 * The Single Post.
 	 *
 	 * @return Response
 	 */
 
-	public function single($param)
+	public function single(Post $post)
 	{
-		$post = Post::where('slug', $param)
-			->with('category')
-			->firstOrFail();
-
 		$post->body = Str::of($post->body)->markdown();
 
 		return Inertia::render('Single', [
@@ -91,22 +88,32 @@ class PostController extends Controller
 			'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 		]);
 
+		// Save a copy of the post as a Markdown file
+		if ( $post->body != $request->input('body') ) {
+			$post->body = $request->input('body');
+			$filename = Str::substr( Str::slug($post->title), 0, 30) . '.md';
+			$content = "# {$post->title}\n\n{$post->body}";
+			Storage::put('markdown/' . $filename, $content);
+		}
+
 		$post->title = $validatedData['title'];
 		$post->body = $validatedData['body'];
 
 		if ($request->file('img')) {
 			$img_name = $request->img->getClientOriginalName();
-			$img_obj = $request->img->move( public_path('featured_images'), $img_name );
-			$img_path = strstr($img_obj->getPathname(), '/featured_images');
-			$post->featured_image = $img_path;
+			$img_obj = $request->img->move( public_path('post_images'), $img_name );
+			$save_path = strstr($img_obj->getPathname(), '/post_images');
+			//$full_path = public_path('post_images/' . $img_name );
+			// strip the file extension from $img_name
+			$img_name = preg_replace('/\\.[^.\\s]{3,4}$/', '', $img_name);
+			$webp_path = public_path('post_images/svg/' . $img_name ) . '.webp';
+			Image::make($img_obj->getPathname())->save($webp_path, 80, 'webp');
+
+			$save_path = strstr($webp_path, '/post_images');
+			$post->featured_image = $save_path;
 		} elseif ($request->input('remove_featured_image')) {
 			$post->featured_image = '';
 		}
-
-		// Save a copy of the post as a Markdown file
-		$filename = Str::substr( Str::slug($post->title), 0, 30) . '.md';
-		$content = "# {$post->title}\n\n{$post->body}";
-		$return = Storage::put('markdown/' . $filename, $content);
 
 		// Update the slug.
 		$post->slug = Str::slug($post->title);
